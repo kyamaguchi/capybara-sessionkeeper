@@ -63,4 +63,57 @@ RSpec.describe Capybara::Sessionkeeper do
       }.to raise_error(Capybara::Sessionkeeper::CookieError, /visit/)
     end
   end
+
+  context 'keeping signin' do
+    def github_username
+      raise('set your github credentials using envchain. See README.') if ENV['GITHUB_USERNAME'].nil?
+      ENV['GITHUB_USERNAME']
+    end
+    def github_password
+      ENV['GITHUB_PASSWORD']
+    end
+
+    def login_github(session)
+      session.visit 'https://github.com/login'
+      sleep 2
+      session.fill_in 'login_field', with: github_username
+      session.fill_in 'password', with: github_password
+      session.click_on 'Sign in'
+      session
+    end
+
+    def visit_home(session)
+      session.visit "https://github.com/#{github_username}"
+      within('.vcard-username') do
+        expect(session).to have_content(login)
+      end
+      session
+    end
+
+    it "sees profile page after restoring cookies" do
+      begin
+        github_username
+      rescue => e
+        skip("#{e.message} #{e.backtrace.first}")
+      end
+      login_github(session)
+      expect(session).to have_selector('#user-links')
+      session.visit 'https://github.com/settings/profile'
+      expect(session).to have_content('Public profile')
+      session.save_cookies
+
+      session.reset_session!
+
+      session.visit 'https://github.com/'
+      expect(session).to have_link('Sign in')
+      expect(session).not_to have_selector('#user-links')
+
+      session.restore_cookies
+
+      session.visit session.current_url
+      expect(session).to have_selector('#user-links')
+      session.visit 'https://github.com/settings/profile'
+      expect(session).to have_content('Public profile')
+    end
+  end
 end
