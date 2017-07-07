@@ -1,3 +1,4 @@
+require "byebug"
 require "bundler/setup"
 require "capybara/sessionkeeper"
 
