@@ -6,18 +6,11 @@ RSpec.describe Capybara::Sessionkeeper do
   end
 
   describe '#save_cookies' do
-    let(:cookie_filepath) { 'all_cookies.txt' }
-
-    before do
-      File.delete(cookie_filepath) if File.exists?(cookie_filepath)
-    end
-
     it "saves cookies into file" do
-      expect(File.exists?(cookie_filepath)).to be_falsey
       session = Capybara::Session.new(:chrome)
       session.visit 'https://github.com/'
-      session.save_cookies
-      expect(File.exists?(cookie_filepath)).to be_truthy
+      path = session.save_cookies
+      expect(path).to match(/capybara-\d+.cookies.txt/)
     end
   end
 end

@@ -12,8 +12,13 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  config.before do
+    FileUtils.rm_rf('spec/tmp')
+  end
 end
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
+Capybara.save_path = 'spec/tmp/capybara'

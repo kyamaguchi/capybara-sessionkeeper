@@ -3,9 +3,11 @@ require "capybara/sessionkeeper/version"
 
 module Capybara
   module Sessionkeeper
-    def save_cookies
+    def save_cookies(path = nil)
+      path = prepare_path(path, 'cookies.txt')
       data = driver.browser.manage.all_cookies
-      File.open('all_cookies.txt', 'wb') {|f| f.write(data)}
+      File.write(path, data, mode: 'wb')
+      path
     end
   end
 end
