@@ -15,6 +15,26 @@ RSpec.describe Capybara::Sessionkeeper do
   end
 
   describe '#restore_cookies' do
+    context "when path of cookie file isn't given" do
+      let(:save_path_for_test) { 'spec/fixtures/restore_test' }
+
+      it "restores cookies from the latest file" do
+        allow(Capybara).to receive(:save_path).and_return(save_path_for_test)
+        session = Capybara::Session.new(:chrome)
+        session.visit 'https://github.com/'
+        cookies = session.restore_cookies
+        expect(cookies).not_to be_nil
+        expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
+      end
+
+      it "returns nil when cookie file doesn't exist in save_path" do
+        allow(Capybara).to receive(:save_path).and_return('spec/fixtures/not_exist')
+        session = Capybara::Session.new(:chrome)
+        session.visit 'https://github.com/'
+        expect(session.restore_cookies).to be_nil
+      end
+    end
+
     let(:cookie_path) { 'spec/fixtures/github.cookies.txt' }
 
     it "restores cookies from file" do

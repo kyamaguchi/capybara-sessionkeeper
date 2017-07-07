@@ -6,21 +6,37 @@ module Capybara
     class CookieError < StandardError; end
 
     def save_cookies(path = nil)
-      path = prepare_path(path, 'cookies.txt')
+      path = prepare_path(path, cookie_file_extension)
       data = Marshal.dump driver.browser.manage.all_cookies
       File.write(path, data)
       path
     end
 
-    def restore_cookies(path)
+    def restore_cookies(path = nil)
       raise CookieError, "visit must be performed to restore cookies" if driver.browser.manage.all_cookies.empty?
+      path ||= find_latest_cookie_file
+      return nil if path.nil?
       data = File.read(path)
       Marshal.load(data).each do |d|
         driver.browser.manage.add_cookie d
       end
       driver.browser.manage.all_cookies
     rescue => e
-      raise $!, "You need to visit the site you are trying to restore cookie first\n#{$!}", $!.backtrace
+      if e.message =~ /invalid cookie domain/
+        raise e, "You need to visit the site you are trying to restore cookie first\n#{e}", e.backtrace
+      else
+        raise(e)
+      end
+    end
+
+    def cookie_file_extension
+      'cookies.txt'
+    end
+
+    private
+
+    def find_latest_cookie_file
+      Dir.glob(File.join(Capybara.save_path, "*.#{cookie_file_extension}")).max_by{|f| File.mtime(f) }
     end
   end
 end
