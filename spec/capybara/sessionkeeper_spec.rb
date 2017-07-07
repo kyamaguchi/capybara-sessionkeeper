@@ -11,6 +11,13 @@ RSpec.describe Capybara::Sessionkeeper do
       path = session.save_cookies
       expect(path).to match(/capybara-\d+.cookies.txt/)
     end
+
+    it "saves cookies into specified file" do
+      cookie_path = 'my/cookie.txt'
+      session.visit 'https://github.com/'
+      session.save_cookies(cookie_path)
+      expect(File.exists?(File.join(Capybara.save_path, cookie_path))).to be_truthy
+    end
   end
 
   describe '#restore_cookies' do
