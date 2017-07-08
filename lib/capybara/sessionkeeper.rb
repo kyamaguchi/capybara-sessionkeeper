@@ -21,11 +21,7 @@ module Capybara
         begin
           driver.browser.manage.add_cookie d
         rescue => e
-          if e.message =~ /invalid cookie domain/
-            # puts "Skipped invalid cookie domain: #{d[:domain]} - #{d.inspect}"
-          else
-            raise(e)
-          end
+          skip_invalid_cookie_domain_error(e)
         end
       end
       driver.browser.manage.all_cookies
@@ -39,6 +35,15 @@ module Capybara
 
     def find_latest_cookie_file
       Dir.glob(File.join(Capybara.save_path, "*.#{cookie_file_extension}")).max_by{|f| File.mtime(f) }
+    end
+
+    def skip_invalid_cookie_domain_error(e)
+      if e.message =~ /invalid cookie domain/
+        # Case of :chrome driver. Selenium::WebDriver::Error::InvalidCookieDomainError
+        # puts "Skipped invalid cookie domain: #{d[:domain]} - #{d.inspect}"
+      else
+        raise(e)
+      end
     end
   end
 end
