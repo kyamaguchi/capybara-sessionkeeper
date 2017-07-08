@@ -38,8 +38,12 @@ module Capybara
     end
 
     def skip_invalid_cookie_domain_error(e)
-      if e.message =~ /invalid cookie domain/
-        # Case of :chrome driver. Selenium::WebDriver::Error::InvalidCookieDomainError
+      if e.message =~ /InvalidCookieDomainError/
+        # Case of :selenium driver(Firefox). e.message -> "ReferenceError: InvalidCookieDomainError is not defined"
+        # Selenium::WebDriver::Error::UnknownError: ReferenceError: InvalidCookieDomainError is not defined
+      elsif e.message =~ /invalid cookie domain/
+        # Case of :chrome driver. e.message -> 'invalid cookie domain: invalid domain:".github.com"'
+        # Selenium::WebDriver::Error::InvalidCookieDomainError
         # puts "Skipped invalid cookie domain: #{d[:domain]} - #{d.inspect}"
       else
         raise(e)
