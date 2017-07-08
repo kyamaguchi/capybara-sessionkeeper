@@ -18,6 +18,11 @@ RSpec.describe Capybara::Sessionkeeper do
       session.save_cookies(cookie_path)
       expect(File.exists?(File.join(Capybara.save_path, cookie_path))).to be_truthy
     end
+
+    it "saves cookies without error when visit has never performed" do
+      path = session.save_cookies
+      expect(path).to match(/capybara-\d+.cookies.txt/)
+    end
   end
 
   describe '#restore_cookies' do
