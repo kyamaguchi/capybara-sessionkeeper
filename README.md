@@ -30,14 +30,20 @@ require "capybara"
 require "capybara/sessionkeeper"
 ```
 
-### Register chrome driver
+### Supported drivers
 
-Currently chrome driver is only supported. (Haven't checked any other drivers.)
+[Recommended] Chrome driver is supported.
 
 ```
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
+```
+
+Firefox(:selenium option) also works.
+
+```
+session = Capybara::Session.new(:selenium)
 ```
 
 ### Location of cookie file
@@ -108,6 +114,13 @@ brew install envchain
 envchain --set github GITHUB_USERNAME GITHUB_PASSWORD
 
 envchain github rspec
+```
+
+### Testing with :selenium(Firefox) driver
+
+```
+SELENIUM=true rspec
+SELENIUM=true envchain github rspec
 ```
 
 ## Contributing
