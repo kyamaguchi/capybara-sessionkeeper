@@ -2,6 +2,8 @@ sudo: require
 language: ruby
 rvm:
   - 2.4.1
+addons:
+  chrome: stable
 before_install: gem install bundler -v 1.15.1
 before_script:
   - "export DISPLAY=:99.0"
