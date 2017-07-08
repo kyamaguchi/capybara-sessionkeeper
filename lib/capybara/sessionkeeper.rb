@@ -18,15 +18,17 @@ module Capybara
       return nil if path.nil?
       data = File.read(path)
       Marshal.load(data).each do |d|
-        driver.browser.manage.add_cookie d
+        begin
+          driver.browser.manage.add_cookie d
+        rescue => e
+          if e.message =~ /invalid cookie domain/
+            # puts "Skipped invalid cookie domain: #{d[:domain]} - #{d.inspect}"
+          else
+            raise(e)
+          end
+        end
       end
       driver.browser.manage.all_cookies
-    rescue => e
-      if e.message =~ /invalid cookie domain/
-        raise e, "You need to visit the site you are trying to restore cookie first\n#{e}", e.backtrace
-      else
-        raise(e)
-      end
     end
 
     def cookie_file_extension

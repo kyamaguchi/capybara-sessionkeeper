@@ -49,12 +49,12 @@ RSpec.describe Capybara::Sessionkeeper do
       expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
     end
 
-    it "raises error when the target site has never been visited" do
+    it "skips invalid domain error" do
       expect(session.driver.browser.manage.all_cookies).to be_empty
       session.visit 'https://www.google.com/'
       expect{
         session.restore_cookies(cookie_path)
-      }.to raise_error(Selenium::WebDriver::Error::InvalidCookieDomainError, /visit/)
+      }.not_to raise_error
     end
 
     it "raises error when visit has never been performed" do
