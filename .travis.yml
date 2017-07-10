@@ -14,3 +14,7 @@ before_script:
   - unzip chromedriver_linux64.zip -d chromedriver
   - export PATH=$PATH:$PWD/chromedriver
   - ls /usr/bin/ | grep chrom
+  - chromedriver --version
+  - chromium-browser --version
+  - google-chrome --version
+  - google-chrome-stable --version
