@@ -3,5 +3,5 @@ def driver_for_test
 end
 
 def session
-  @session ||= Capybara::Session.new(driver_for_test)
+  $session ||= Capybara::Session.new(driver_for_test)
 end
