@@ -20,8 +20,8 @@ RSpec.configure do |config|
   end
 
   config.after do
-    if @session
-      session.driver.quit
+    if $session
+      session.reset_session!
     end
   end
 end
