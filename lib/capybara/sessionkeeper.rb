@@ -8,7 +8,7 @@ module Capybara
     def save_cookies(path = nil)
       path = prepare_path(path, cookie_file_extension)
       data = Marshal.dump driver.browser.manage.all_cookies
-      File.write(path, data)
+      File.open(path, 'wb') {|f| f.puts(data) }
       path
     end
 
@@ -16,7 +16,7 @@ module Capybara
       raise CookieError, "visit must be performed to restore cookies" if driver.browser.manage.all_cookies.empty?
       path ||= find_latest_cookie_file
       return nil if path.nil?
-      data = File.read(path)
+      data = File.open(path, 'rb') {|f| f.read }
       Marshal.load(data).each do |d|
         begin
           driver.browser.manage.add_cookie d
