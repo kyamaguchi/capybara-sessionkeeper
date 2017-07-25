@@ -69,6 +69,15 @@ RSpec.describe Capybara::Sessionkeeper do
     end
   end
 
+  describe '#find_latest_cookie_file' do
+    it "works when Capybara.save_path is nil" do
+      allow(Capybara).to receive(:save_path).and_return(nil)
+      expect{
+        session.find_latest_cookie_file
+      }.not_to raise_error
+    end
+  end
+
   context 'keeping signin' do
     def github_username
       raise('set your github credentials using envchain. See README.') if ENV['GITHUB_USERNAME'].nil?
