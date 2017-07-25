@@ -32,7 +32,7 @@ module Capybara
     end
 
     def find_latest_cookie_file
-      Dir.glob(File.join(Capybara.save_path, "*.#{cookie_file_extension}")).max_by{|f| File.mtime(f) }
+      Dir.glob(File.join([Capybara.save_path, "*.#{cookie_file_extension}"].compact)).max_by{|f| File.mtime(f) }
     end
 
     def skip_invalid_cookie_domain_error(e)
