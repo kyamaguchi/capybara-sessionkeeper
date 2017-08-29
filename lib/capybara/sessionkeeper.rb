@@ -13,7 +13,7 @@ module Capybara
     end
 
     def restore_cookies(path = nil)
-      raise CookieError, "visit must be performed to restore cookies" if driver.browser.manage.all_cookies.empty?
+      raise CookieError, "visit must be performed to restore cookies" if ['data:,', 'about:blank'].include?(current_url)
       path ||= find_latest_cookie_file
       return nil if path.nil?
       data = File.open(path, 'rb') {|f| f.read }
