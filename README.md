@@ -46,6 +46,8 @@ Firefox(:selenium option) also works.
 session = Capybara::Session.new(:selenium)
 ```
 
+`session` will be equivalent to `page` in the system test.
+
 ### Location of cookie file
 
 It follows `Capybara.save_path`.
@@ -78,7 +80,7 @@ cookies = session.restore_cookies
 Restore cookie file with specified file name.
 
 ```
-session.restore_cookies('user1.cookies.txt')
+session.restore_cookies(File.join(Capybara.save_path, 'user1.cookies.txt'))
 ```
 
 ### Read cookies of current session
