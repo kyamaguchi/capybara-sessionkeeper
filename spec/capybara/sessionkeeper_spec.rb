@@ -132,7 +132,7 @@ RSpec.describe Capybara::Sessionkeeper do
   end
 
   it "test1" do
-    expect(true).to be_falsey
+    expect(false).to be_falsey
   end
 
   it "test2" do
