@@ -130,4 +130,8 @@ RSpec.describe Capybara::Sessionkeeper do
       expect(session).to have_content('Public profile')
     end
   end
+
+  it "test" do
+    expect(true).to be_falsey
+  end
 end
