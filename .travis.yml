@@ -1,6 +1,8 @@
 dist: trusty
-sudo: false
 language: ruby
+sudo: required
+addons:
+  chrome: stable
 rvm:
   - 2.4.1
 before_install: gem install bundler -v 1.15.1
