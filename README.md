@@ -48,6 +48,8 @@ session = Capybara::Session.new(:selenium)
 
 `session` will be equivalent to `page` in the system test.
 
+Poltergeist may work with `:poltegeist` option.
+
 ### Location of cookie file
 
 It follows `Capybara.save_path`.
@@ -85,8 +87,16 @@ session.restore_cookies(File.join(Capybara.save_path, 'user1.cookies.txt'))
 
 ### Read cookies of current session
 
+Normally
+
 ```
 session.driver.browser.manage.all_cookies
+```
+
+For poltegeist
+
+```
+session.driver.cookies
 ```
 
 ### Notice of cookie restoration
@@ -123,6 +133,22 @@ envchain github rspec
 ```
 SELENIUM=true rspec
 SELENIUM=true envchain github rspec
+```
+
+#### Test with poltergeist
+
+```
+POLTERGEIST=true envchain github rspec --example 'keeping signin'
+# OR
+POLTERGEIST=true envchain github rspec spec/capybara/sessionkeeper_spec.rb
+```
+
+You may get the error using poltergeist(phantomjs).
+
+To workaround the error 'Capybara::Poltergeist::StatusFailError'
+
+```
+IGNORE_SSL=true POLTERGEIST=true envchain github rspec --example 'keeping signin'
 ```
 
 ## Contributing

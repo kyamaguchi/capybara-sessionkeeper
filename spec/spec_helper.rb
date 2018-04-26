@@ -2,6 +2,8 @@ require "byebug"
 require "bundler/setup"
 require "capybara/sessionkeeper"
 
+require 'capybara/poltergeist'
+
 Dir[File.join(File.dirname(__FILE__), "..", "spec", "support", "**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
@@ -30,3 +32,17 @@ Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 Capybara.save_path = 'spec/tmp/capybara'
+
+if ENV['IGNORE_SSL'] == 'true'
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, {
+      js_errors: false,
+      timeout: 1000,
+      phantomjs_options: [
+        '--load-images=no',
+        '--ignore-ssl-errors=yes',
+        '--ssl-protocol=any',
+      ]
+    })
+  end
+end

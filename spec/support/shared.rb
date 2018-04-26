@@ -1,5 +1,11 @@
 def driver_for_test
-  ENV['SELENIUM'] == 'true' ? :selenium : :chrome
+  if ENV['SELENIUM'] == 'true'
+    :selenium
+  elsif ENV['POLTERGEIST'] == 'true'
+    :poltergeist
+  else
+    :chrome
+  end
 end
 
 def session
