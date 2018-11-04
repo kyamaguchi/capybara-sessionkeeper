@@ -66,6 +66,12 @@ Save cookie file with specified file name.
 session.save_cookies('user1.cookies.txt')
 ```
 
+Save cookie to yaml string (serialization to yaml).
+
+```
+cookie_yaml_str = session.save_cookies_to_yaml
+```
+
 ### Restore cookies
 
 You have to visit the site which you are trying to restore cookie beforehand.  
@@ -81,6 +87,21 @@ Restore cookie file with specified file name.
 
 ```
 session.restore_cookies(File.join(Capybara.save_path, 'user1.cookies.txt'))
+```
+
+Restore cookie from yaml string (deserialization from yaml)
+
+```
+cookies_yaml_str = <<~YAML
+---
+- :name: _gh_sess
+  :value: aWRQdUVLanFEUk56d3h1ZDB5M3c0MXk1V2J5QllU--9c09ace4dda7227197637d9e105d9746245cf513
+  :path: "/"
+  :domain: github.com
+  :expires: 
+  :secure: true
+YAML
+session.restore_cookies_from_yaml(cookies_yaml_str)
 ```
 
 ### Read cookies of current session
