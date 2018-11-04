@@ -23,6 +23,12 @@ RSpec.describe Capybara::Sessionkeeper do
       path = session.save_cookies
       expect(path).to match(/capybara-\d+.cookies.txt/)
     end
+
+    it "saves cookies to string in YAML format" do
+      session.visit "https://github.com/"
+      cookies_in_yaml_format = session.save_cookies_to_yaml
+      expect(cookies_in_yaml_format).not_to be_empty
+    end
   end
 
   describe '#restore_cookies' do
@@ -51,6 +57,17 @@ RSpec.describe Capybara::Sessionkeeper do
       session.visit 'https://github.com/'
       cookies = session.restore_cookies(cookie_path)
       expect(cookies).not_to be_empty
+      expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
+    end
+
+    let(:cookie_yaml_path) { 'spec/fixtures/github.cookies_yaml.txt' }
+
+    it "restores cookies from yaml string" do
+      expect(session.driver.browser.manage.all_cookies).to be_empty
+      session.visit 'https://github.com/'
+      cookies_yaml_str = File.read(cookie_yaml_path)
+      cookies = session.restore_cookies_from_yaml(cookies_yaml_str)
+      expect(session.driver.browser.manage.all_cookies).not_to be_empty
       expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
     end
 

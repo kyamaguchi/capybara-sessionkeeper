@@ -1,0 +1,43 @@
+---
+- :name: _gh_sess
+  :value: aWRQdUVLanFEUk56d3h1ZDB5M3c0MXk1V2J5QllU--9c09ace4dda7227197637d9e105d9746245cf513
+  :path: "/"
+  :domain: github.com
+  :expires: 
+  :secure: true
+- :name: tz
+  :value: Europe%2FMoscow
+  :path: "/"
+  :domain: github.com
+  :expires: 
+  :secure: true
+- :name: _gat
+  :value: '1'
+  :path: "/"
+  :domain: ".github.com"
+  :expires: !ruby/object:DateTime 2018-11-04 10:56:55.000000026 Z
+  :secure: false
+- :name: logged_in
+  :value: 'no'
+  :path: "/"
+  :domain: ".github.com"
+  :expires: !ruby/object:DateTime 2038-11-04 10:46:54.775524207 Z
+  :secure: true
+- :name: _octo
+  :value: GH1.1.1909236569.1541328415
+  :path: "/"
+  :domain: ".github.com"
+  :expires: !ruby/object:DateTime 2020-11-03 10:46:54.999999956 Z
+  :secure: false
+- :name: _ga
+  :value: GA1.2.1704789173.1541328415
+  :path: "/"
+  :domain: ".github.com"
+  :expires: !ruby/object:DateTime 2020-11-03 10:46:54.999999956 Z
+  :secure: false
+- :name: has_recent_activity
+  :value: '1'
+  :path: "/"
+  :domain: github.com
+  :expires: !ruby/object:DateTime 2018-11-04 11:46:55.656831139 Z
+  :secure: false
