@@ -1,5 +1,6 @@
 require 'capybara'
 require "capybara/sessionkeeper/version"
+require 'yaml'
 
 module Capybara
   module Sessionkeeper
@@ -25,6 +26,10 @@ module Capybara
         end
       end
       driver.browser.manage.all_cookies
+    end
+
+    def cookies_to_yaml
+      YAML.dump driver.browser.manage.all_cookies
     end
 
     def cookie_file_extension

@@ -69,6 +69,15 @@ RSpec.describe Capybara::Sessionkeeper do
     end
   end
 
+  describe '#cookies_to_yaml' do
+    it "outputs string of yaml format" do
+      session.visit 'https://github.com/'
+      yaml_str = session.cookies_to_yaml
+      data = YAML.load(yaml_str)
+      expect(data.map{|d| d[:domain] }).to include('github.com', '.github.com')
+    end
+  end
+
   describe '#find_latest_cookie_file' do
     it "works when Capybara.save_path is nil" do
       allow(Capybara).to receive(:save_path).and_return(nil)
