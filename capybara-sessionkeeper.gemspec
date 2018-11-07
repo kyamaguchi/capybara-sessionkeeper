@@ -1,5 +1,4 @@
-# coding: utf-8
-lib = File.expand_path("../lib", __FILE__)
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "capybara/sessionkeeper/version"
 
@@ -9,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Kazuho Yamaguchi"]
   spec.email         = ["kzh.yap@gmail.com"]
 
-  spec.summary       = %q{Save and restore cookies of capybara session.}
-  spec.description   = %q{Save and restore cookies of capybara session.}
+  spec.summary       = "Save and restore cookies of capybara session."
+  spec.description   = "Save and restore cookies of capybara session."
   spec.homepage      = "https://github.com/kyamaguchi/capybara-sessionkeeper"
   spec.license       = "MIT"
 

@@ -16,7 +16,7 @@ RSpec.describe Capybara::Sessionkeeper do
       cookie_path = 'my/cookie.txt'
       session.visit 'https://github.com/'
       session.save_cookies(cookie_path)
-      expect(File.exists?(File.join(Capybara.save_path, cookie_path))).to be_truthy
+      expect(File.exist?(File.join(Capybara.save_path, cookie_path))).to be_truthy
     end
 
     it "saves cookies without error when visit has never performed" do
@@ -104,6 +104,7 @@ RSpec.describe Capybara::Sessionkeeper do
       raise('set your github credentials using envchain. See README.') if ENV['GITHUB_USERNAME'].nil?
       ENV['GITHUB_USERNAME']
     end
+
     def github_password
       ENV['GITHUB_PASSWORD']
     end
@@ -128,7 +129,7 @@ RSpec.describe Capybara::Sessionkeeper do
     it "sees profile page after restoring cookies" do
       begin
         github_username
-      rescue => e
+      rescue StandardError => e
         skip("#{e.message} #{e.backtrace.first}")
       end
       login_github(session)

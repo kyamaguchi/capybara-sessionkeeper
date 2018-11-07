@@ -1,0 +1,32 @@
+# FIXME using json may be better
+Security/MarshalLoad:
+  Enabled: false
+
+
+Gemspec/OrderedDependencies:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+Layout/SpaceInsideBlockBraces:
+  Enabled: false
+Security/YAMLLoad:
+  Enabled: false
+Style/BlockDelimiters:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: true
+  Exclude:
+    - "spec/**/*"
