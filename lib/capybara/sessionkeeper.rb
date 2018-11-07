@@ -16,7 +16,7 @@ module Capybara
     def restore_cookies(path = nil)
       path ||= find_latest_cookie_file
       return nil if path.nil?
-      data = File.open(path, 'rb') {|f| f.read }
+      data = File.open(path, 'rb', &:read)
       restore_cookies_from_data(data)
     end
 
@@ -26,7 +26,7 @@ module Capybara
       cookies.each do |d|
         begin
           driver.browser.manage.add_cookie d
-        rescue => e
+        rescue StandardError => e
           skip_invalid_cookie_domain_error(e)
         end
       end
@@ -45,14 +45,14 @@ module Capybara
       Dir.glob(File.join([Capybara.save_path, "*.#{cookie_file_extension}"].compact)).max_by{|f| File.mtime(f) }
     end
 
-    def skip_invalid_cookie_domain_error(e)
-      if e.message =~ /invalid cookie domain/ || # Chrome
-         e.message =~ /InvalidCookieDomainError/ || # Old firefox
-         e.class.to_s == 'Selenium::WebDriver::Error::InvalidCookieDomainError' # Firefox
-        # puts e.class, e.message
+    def skip_invalid_cookie_domain_error(error)
+      if error.message =~ /invalid cookie domain/ || # Chrome
+         error.message =~ /InvalidCookieDomainError/ || # Old firefox
+         error.class.to_s == 'Selenium::WebDriver::Error::InvalidCookieDomainError' # Firefox
+        # puts error.class, error.message
         # puts "Skipped invalid cookie domain: #{d[:domain]} - #{d.inspect}"
       else
-        raise(e)
+        raise(error)
       end
     end
   end

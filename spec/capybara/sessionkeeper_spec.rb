@@ -16,7 +16,7 @@ RSpec.describe Capybara::Sessionkeeper do
       cookie_path = 'my/cookie.txt'
       session.visit 'https://github.com/'
       session.save_cookies(cookie_path)
-      expect(File.exists?(File.join(Capybara.save_path, cookie_path))).to be_truthy
+      expect(File).to be_exist(File.join(Capybara.save_path, cookie_path))
     end
 
     it "saves cookies without error when visit has never performed" do
@@ -34,7 +34,7 @@ RSpec.describe Capybara::Sessionkeeper do
         session.visit 'https://github.com/'
         cookies = session.restore_cookies
         expect(cookies).not_to be_nil
-        expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
+        expect(cookies).to be_all{|c| c[:domain] =~ /github\.com/ }
       end
 
       it "returns nil when cookie file doesn't exist in save_path" do
@@ -44,28 +44,30 @@ RSpec.describe Capybara::Sessionkeeper do
       end
     end
 
-    let(:cookie_path) { 'spec/fixtures/github.cookies.txt' }
+    context 'when cookie file exists' do
+      let(:cookie_path) { 'spec/fixtures/github.cookies.txt' }
 
-    it "restores cookies from file" do
-      expect(session.driver.browser.manage.all_cookies).to be_empty
-      session.visit 'https://github.com/'
-      cookies = session.restore_cookies(cookie_path)
-      expect(cookies).not_to be_empty
-      expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
-    end
+      it "restores cookies from file" do
+        expect(session.driver.browser.manage.all_cookies).to be_empty
+        session.visit 'https://github.com/'
+        cookies = session.restore_cookies(cookie_path)
+        expect(cookies).not_to be_empty
+        expect(cookies).to be_all{|c| c[:domain] =~ /github\.com/ }
+      end
 
-    it "skips invalid domain error" do
-      expect(session.driver.browser.manage.all_cookies).to be_empty
-      session.visit 'https://www.google.com/'
-      expect{
-        session.restore_cookies(cookie_path)
-      }.not_to raise_error
-    end
+      it "skips invalid domain error" do
+        expect(session.driver.browser.manage.all_cookies).to be_empty
+        session.visit 'https://www.google.com/'
+        expect{
+          session.restore_cookies(cookie_path)
+        }.not_to raise_error
+      end
 
-    it "raises error when visit has never been performed" do
-      expect{
-        session.restore_cookies(cookie_path)
-      }.to raise_error(Capybara::Sessionkeeper::CookieError, /visit/)
+      it "raises error when visit has never been performed" do
+        expect{
+          session.restore_cookies(cookie_path)
+        }.to raise_error(Capybara::Sessionkeeper::CookieError, /visit/)
+      end
     end
   end
 
@@ -76,7 +78,7 @@ RSpec.describe Capybara::Sessionkeeper do
 
       cookies = session.restore_cookies_from_data(yaml_str, format: 'yaml')
       expect(cookies).not_to be_empty
-      expect(cookies.all?{|c| c[:domain] =~ /github\.com/ }).to be_truthy
+      expect(cookies).to be_all{|c| c[:domain] =~ /github\.com/ }
       expect(session.driver.browser.manage.all_cookies).not_to be_empty
     end
   end
@@ -99,11 +101,12 @@ RSpec.describe Capybara::Sessionkeeper do
     end
   end
 
-  context 'keeping signin' do
+  context 'with keeping signin' do
     def github_username
       raise('set your github credentials using envchain. See README.') if ENV['GITHUB_USERNAME'].nil?
       ENV['GITHUB_USERNAME']
     end
+
     def github_password
       ENV['GITHUB_PASSWORD']
     end
@@ -128,7 +131,7 @@ RSpec.describe Capybara::Sessionkeeper do
     it "sees profile page after restoring cookies" do
       begin
         github_username
-      rescue => e
+      rescue StandardError => e
         skip("#{e.message} #{e.backtrace.first}")
       end
       login_github(session)

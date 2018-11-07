@@ -20,9 +20,7 @@ RSpec.configure do |config|
   end
 
   config.after do
-    if $session
-      session.reset_session!
-    end
+    session.reset_session! if $session
   end
 end
 
