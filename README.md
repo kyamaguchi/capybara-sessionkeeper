@@ -83,6 +83,20 @@ Restore cookie file with specified file name.
 session.restore_cookies(File.join(Capybara.save_path, 'user1.cookies.txt'))
 ```
 
+### Save and restore cookies from YAML
+
+Save cookie to yaml string (serialization to yaml).
+
+```
+yaml_str = session.cookies_to_yaml
+```
+
+Restore cookie from yaml string (deserialization from yaml).
+
+```
+session.restore_cookies_from_data(yaml_str, format: 'yaml')
+```
+
 ### Read cookies of current session
 
 ```

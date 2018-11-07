@@ -1,5 +1,6 @@
 require 'capybara'
 require "capybara/sessionkeeper/version"
+require 'yaml'
 
 module Capybara
   module Sessionkeeper
@@ -13,11 +14,16 @@ module Capybara
     end
 
     def restore_cookies(path = nil)
-      raise CookieError, "visit must be performed to restore cookies" if ['data:,', 'about:blank'].include?(current_url)
       path ||= find_latest_cookie_file
       return nil if path.nil?
       data = File.open(path, 'rb') {|f| f.read }
-      Marshal.load(data).each do |d|
+      restore_cookies_from_data(data)
+    end
+
+    def restore_cookies_from_data(data, options = {})
+      raise CookieError, "visit must be performed to restore cookies" if ['data:,', 'about:blank'].include?(current_url)
+      cookies = %w[yml yaml].include?(options[:format]) ? YAML.load(data) : Marshal.load(data)
+      cookies.each do |d|
         begin
           driver.browser.manage.add_cookie d
         rescue => e
@@ -25,6 +31,10 @@ module Capybara
         end
       end
       driver.browser.manage.all_cookies
+    end
+
+    def cookies_to_yaml
+      YAML.dump driver.browser.manage.all_cookies
     end
 
     def cookie_file_extension
