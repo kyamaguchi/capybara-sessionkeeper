@@ -32,7 +32,8 @@ require "capybara/sessionkeeper"
 
 ### Supported drivers
 
-[Recommended] Chrome driver is supported.
+[Recommended] Chrome driver is supported.  
+[Install chromedriver](http://chromedriver.chromium.org/downloads)
 
 ```
 Capybara.register_driver :chrome do |app|
@@ -40,7 +41,8 @@ Capybara.register_driver :chrome do |app|
 end
 ```
 
-Firefox(:selenium option) also works.
+Firefox(:selenium option) also works.  
+[Install geckodriver](https://github.com/mozilla/geckodriver/releases)
 
 ```
 session = Capybara::Session.new(:selenium)
