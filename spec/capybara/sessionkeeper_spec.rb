@@ -143,13 +143,14 @@ RSpec.describe Capybara::Sessionkeeper do
       session.reset_session!
 
       session.visit 'https://github.com/'
-      expect(session).to have_link('Sign in')
+      expect(session).to have_selector('a[href="/login"]')
       expect(session).not_to have_selector('#user-links')
 
       session.restore_cookies
 
       session.visit session.current_url
       expect(session).to have_selector('#user-links')
+      expect(session).not_to have_selector('a[href="/login"]')
       session.visit 'https://github.com/settings/profile'
       expect(session).to have_content('Public profile')
     end
