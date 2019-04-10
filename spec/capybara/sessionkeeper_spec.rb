@@ -135,7 +135,7 @@ RSpec.describe Capybara::Sessionkeeper do
         skip("#{e.message} #{e.backtrace.first}")
       end
       login_github(session)
-      expect(session).to have_selector('#user-links')
+      expect(session).to have_selector('body.logged-in')
       session.visit 'https://github.com/settings/profile'
       expect(session).to have_content('Public profile')
       session.save_cookies
@@ -144,12 +144,12 @@ RSpec.describe Capybara::Sessionkeeper do
 
       session.visit 'https://github.com/'
       expect(session).to have_selector('a[href="/login"]')
-      expect(session).not_to have_selector('#user-links')
+      expect(session).to have_selector('body.logged-out')
 
       session.restore_cookies
 
       session.visit session.current_url
-      expect(session).to have_selector('#user-links')
+      expect(session).to have_selector('body.logged-in')
       expect(session).not_to have_selector('a[href="/login"]')
       session.visit 'https://github.com/settings/profile'
       expect(session).to have_content('Public profile')
