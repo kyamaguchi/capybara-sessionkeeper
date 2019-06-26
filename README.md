@@ -41,7 +41,7 @@ Capybara.register_driver :chrome do |app|
 end
 ```
 
-Firefox(:selenium option) also works.  
+Firefox(:selenium option) may not work.  
 [Install geckodriver](https://github.com/mozilla/geckodriver/releases)
 
 ```
