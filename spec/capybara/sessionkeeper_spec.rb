@@ -101,58 +101,25 @@ RSpec.describe Capybara::Sessionkeeper do
     end
   end
 
-  context 'with keeping signin' do
-    def github_username
-      raise('set your github credentials using envchain. See README.') if ENV['GITHUB_USERNAME'].nil?
-      ENV['GITHUB_USERNAME']
+  context 'with keeping session' do
+    def app_host
+      ENV.fetch('APP_HOST', 'https://testapp-capybara-sessionkeeper.herokuapp.com/')
     end
 
-    def github_password
-      ENV['GITHUB_PASSWORD']
-    end
-
-    def login_github(session)
-      session.visit 'https://github.com/login'
-      sleep 2
-      session.fill_in 'login_field', with: github_username
-      session.fill_in 'password', with: github_password
-      session.click_on 'Sign in'
-      session
-    end
-
-    def visit_home(session)
-      session.visit "https://github.com/#{github_username}"
-      within('.vcard-username') do
-        expect(session).to have_content(login)
-      end
-      session
-    end
-
-    it "sees profile page after restoring cookies" do
-      begin
-        github_username
-      rescue StandardError => e
-        skip("#{e.message} #{e.backtrace.first}")
-      end
-      login_github(session)
-      expect(session).to have_selector('body.logged-in')
-      session.visit 'https://github.com/settings/profile'
-      expect(session).to have_content('Public profile')
+    it "sees the value in session after restoring cookies" do
+      session.visit "#{app_host}?test=abc"
+      expect(session).to have_content('Session: abc')
       session.save_cookies
 
       session.reset_session!
 
-      session.visit 'https://github.com/'
-      expect(session).to have_selector('a[href="/login"]')
-      expect(session).to have_selector('body.logged-out')
+      session.visit app_host
+      expect(session).to have_content('No Session')
 
       session.restore_cookies
 
       session.visit session.current_url
-      expect(session).to have_selector('body.logged-in')
-      expect(session).not_to have_selector('a[href="/login"]')
-      session.visit 'https://github.com/settings/profile'
-      expect(session).to have_content('Public profile')
+      expect(session).to have_content('Session: abc')
     end
   end
 end
