@@ -120,26 +120,15 @@ You just need to sign in once(or occasionally) and save/restore cookies.
 
 ## Development
 
-### Testing spec which requires signin using envchain
-
-There are some spec requiring GitHub signin.  
-
-You can store environment variables in macOS Keychain.  
-Check out [envchain](https://github.com/sorah/envchain)
-
-```
-brew install envchain
-envchain --set github GITHUB_USERNAME GITHUB_PASSWORD
-
-envchain github rspec
-```
-
 ### Testing with :selenium(Firefox) driver
 
 ```
 SELENIUM=true rspec
-SELENIUM=true envchain github rspec
 ```
+
+### Test app
+
+Some spec uses test app https://github.com/kyamaguchi/testapp-capybara-sessionkeeper
 
 ## Contributing
 
