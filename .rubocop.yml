@@ -13,6 +13,8 @@ Metrics/BlockLength:
   Enabled: false
 Metrics/LineLength:
   Enabled: false
+Metrics/MethodLength:
+  Enabled: false
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 Layout/SpaceBeforeBlockBraces:
