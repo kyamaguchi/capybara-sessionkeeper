@@ -25,6 +25,7 @@ module Capybara
       cookies = %w[yml yaml].include?(options[:format]) ? YAML.load(data) : Marshal.load(data)
       cookies.each do |d|
         begin
+          driver.browser.manage.delete_cookie d[:name]
           driver.browser.manage.add_cookie d
         rescue StandardError => e
           skip_invalid_cookie_domain_error(e)
