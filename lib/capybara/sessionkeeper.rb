@@ -59,4 +59,4 @@ module Capybara
   end
 end
 
-Capybara::Session.send(:include, Capybara::Sessionkeeper)
+Capybara::Session.include Capybara::Sessionkeeper
