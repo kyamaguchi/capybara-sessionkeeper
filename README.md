@@ -1,7 +1,7 @@
 # Capybara::Sessionkeeper
 
 [![Gem Version](https://badge.fury.io/rb/capybara-sessionkeeper.svg)](https://badge.fury.io/rb/capybara-sessionkeeper)
-[![Build Status](https://travis-ci.org/kyamaguchi/capybara-sessionkeeper.svg?branch=master)](https://travis-ci.org/kyamaguchi/capybara-sessionkeeper)
+[![CircleCI](https://circleci.com/gh/kyamaguchi/capybara-sessionkeeper.svg?style=svg)](https://circleci.com/gh/kyamaguchi/capybara-sessionkeeper)
 
 Save and restore cookies of capybara session
 
